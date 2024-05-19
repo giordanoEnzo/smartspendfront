@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="APIsheet" href="js/API.js">
+  <title>Smart Spend</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img src="img/logo.png" alt="Logo" id="logo" class="d-inline-block align-top">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="modal" data-target="#loginCadastroModal">Cadastro / Login</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="chat-box">
+  <!-- área para exibir o chat -->
+</div>
+
+<div class="fixed-bottom p-3">
+  <button id="btn-reload" type="button" class="btn">Reiniciar chat</button>
+  <div class="chat-input-container">
+    <input type="text" id="user-input" class="chat-input" placeholder="Faça sua pergunta...">
+    <button class="send-button" onclick="enviarPergunta()">Enviar</button>
+  </div>
+</div>
+
+<div class="modal fade" id="loginCadastroModal" tabindex="-1" role="dialog" aria-labelledby="loginCadastroModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="cadastro-tab" data-toggle="tab" href="#cadastro" role="tab" aria-controls="cadastro" aria-selected="false">Cadastro</a>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <!-- Conteúdo da Tab de Login -->
+          <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+            <form>
+              <div class="form-group">
+                <label for="loginUsuario">Usuário</label>
+                <input type="text" class="form-control" id="loginUsuario" name="loginUsuario" required>
+              </div>
+              <div class="form-group">
+                <label for="loginSenha">Senha</label>
+                <input type="password" class="form-control" id="loginSenha" name="loginSenha" required>
+              </div>
+              <button type="submit" class="btn send-button">Entrar</button>
+            </form>
+          </div>
+          <!-- Conteúdo da Tab de Cadastro -->
+          <div class="tab-pane fade" id="cadastro" role="tabpanel" aria-labelledby="cadastro-tab">
+            <form>
+              <div class="form-group">
+                <label for="cadastroUsuario">Usuário</label>
+                <input type="text" class="form-control" id="cadastroUsuario" name="cadastroUsuario" required>
+              </div>
+              <div class="form-group">
+                <label for="cadastroEmail">E-mail</label>
+                <input type="email" class="form-control" id="cadastroEmail" name="cadastroEmail" required>
+              </div>
+              <div class="form-group">
+                <label for="cadastroSenha">Senha</label>
+                <input type="password" class="form-control" id="cadastroSenha" name="cadastroSenha" required>
+              </div>
+              <div class="form-group">
+                <label for="cadastroConfirmarSenha">Confirme a Senha</label>
+                <input type="password" class="form-control" id="cadastroConfirmarSenha" name="cadastroConfirmarSenha" required>
+              </div>
+              <button type="submit" class="btn send-button">Cadastrar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+<script>
+  function enviarPergunta() {
+    const pergunta = document.getElementById('user-input').value;
+
+    // Exibe a pergunta no chat-box
+    const chatBox = document.getElementById('chat-box');
+    const perguntaElement = document.createElement('div');
+    perguntaElement.innerText = pergunta;
+    perguntaElement.classList.add('pergunta'); // Adiciona a classe 'pergunta' ao elemento
+    chatBox.appendChild(perguntaElement);
+
+    // Substitua 'URL_DA_SUA_API' pela URL da sua outra API externa
+    fetch('https://ed4f-189-113-37-58.ngrok-free.app/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ pergunta }),
+    })
+            .then(response => response.json())
+            .then(data => {
+              // Exiba a resposta recebida da outra API no chat-box
+              const respostaElement = document.createElement('div');
+              respostaElement.innerText = data.resposta;
+              respostaElement.classList.add('resposta'); // Adiciona a classe 'resposta' ao elemento
+              chatBox.appendChild(respostaElement);
+
+              // Rolagem automática para a última mensagem
+              chatBox.scrollTop = chatBox.scrollHeight;
+            })
+            .catch(error => console.error('Erro ao enviar pergunta:', error));
+
+    // Limpe o campo de entrada
+    document.getElementById('user-input').value = '';
+  }
+
+  // Adiciona evento de clique ao botão "Reiniciar chat"
+  document.getElementById('btn-reload').addEventListener('click', function () {
+    document.getElementById('chat-box').innerHTML = ''; // Limpa o conteúdo do chat-box
+  });
+</script>
+
+</body>
+</html>
