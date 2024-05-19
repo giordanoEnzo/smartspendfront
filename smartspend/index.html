@@ -140,6 +140,16 @@
   document.getElementById('btn-reload').addEventListener('click', function () {
     document.getElementById('chat-box').innerHTML = ''; // Limpa o conteúdo do chat-box
   });
+
+  function enviarPerguntaAoPressionarEnter(event) {
+    if (event.key === 'Enter') { // Verifica se a tecla pressionada é Enter
+      event.preventDefault(); // Evita que a tecla Enter submeta o formulário
+      enviarPergunta(); // Chama a função para enviar a pergunta
+    }
+  }
+
+  // Adiciona evento de teclado ao campo de entrada
+  document.getElementById('user-input').addEventListener('keypress', enviarPerguntaAoPressionarEnter);
 </script>
 
 </body>
