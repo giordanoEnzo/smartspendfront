@@ -29,10 +29,12 @@
 
 <div id="chat-box">
   <!-- área para exibir o chat -->
+  <div id="loading-spinner" class="spinner-grow" role="status" style="display: none;">
+  </div>
 </div>
 
 <div class="fixed-bottom p-3">
-  <button id="btn-reload" type="button" class="btn">Reiniciar chat</button>
+  <button id="btn-reload" type="button" class="btn">Reiniciar</button>
   <div class="chat-input-container">
     <input type="text" id="user-input" class="chat-input" placeholder="Faça sua pergunta...">
     <button class="send-button" onclick="enviarPergunta()">Enviar</button>
@@ -52,7 +54,6 @@
           </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-          <!-- Conteúdo da Tab de Login -->
           <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
             <form>
               <div class="form-group">
@@ -66,7 +67,6 @@
               <button type="submit" class="btn send-button">Entrar</button>
             </form>
           </div>
-          <!-- Conteúdo da Tab de Cadastro -->
           <div class="tab-pane fade" id="cadastro" role="tabpanel" aria-labelledby="cadastro-tab">
             <form>
               <div class="form-group">
@@ -108,48 +108,78 @@
     const chatBox = document.getElementById('chat-box');
     const perguntaElement = document.createElement('div');
     perguntaElement.innerText = pergunta;
-    perguntaElement.classList.add('pergunta'); // Adiciona a classe 'pergunta' ao elemento
+    perguntaElement.classList.add('pergunta');
     chatBox.appendChild(perguntaElement);
+
+    // Cria um novo elemento de resposta com o spinner
+    const respostaElement = document.createElement('div');
+    respostaElement.classList.add('resposta');
+
+    const spinner = document.createElement('div');
+    spinner.classList.add('spinner-grow', 'text-primary');
+    spinner.setAttribute('role', 'status');
+
+    const srOnly = document.createElement('span');
+    srOnly.classList.add('sr-only');
+
+    spinner.appendChild(srOnly);
+    respostaElement.appendChild(spinner);
+    chatBox.appendChild(respostaElement);
+
+    // Mostra o spinner
+    spinner.style.display = 'block';
+
+    // Rolagem automática para a última mensagem
+    chatBox.scrollTop = chatBox.scrollHeight;
 
     // Substitua 'URL_DA_SUA_API' pela URL da sua outra API externa
     fetch('https://ed4f-189-113-37-58.ngrok-free.app/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ pergunta }),
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ pergunta }),
     })
-            .then(response => response.json())
-            .then(data => {
-              // Exiba a resposta recebida da outra API no chat-box
-              const respostaElement = document.createElement('div');
-              respostaElement.innerText = data.resposta;
-              respostaElement.classList.add('resposta'); // Adiciona a classe 'resposta' ao elemento
-              chatBox.appendChild(respostaElement);
+    .then(response => response.json())
+    .then(data => {
+        // Oculta o spinner
+        spinner.style.display = 'none';
 
-              // Rolagem automática para a última mensagem
-              chatBox.scrollTop = chatBox.scrollHeight;
-            })
-            .catch(error => console.error('Erro ao enviar pergunta:', error));
+        // Atualiza a resposta com o texto recebido da API
+        respostaElement.innerText = data.resposta;
+        respostaElement.classList.add('resposta');
+        chatBox.appendChild(respostaElement);
+
+        // Rolagem automática para a última mensagem
+        chatBox.scrollTop = chatBox.scrollHeight;
+    })
+    .catch(error => {
+        console.error('Erro ao enviar pergunta:', error);
+
+        // Oculta o spinner em caso de erro
+        spinner.style.display = 'none';
+
+        // Mostra uma mensagem de erro
+        respostaElement.innerText = 'Erro ao enviar pergunta';
+    });
 
     // Limpe o campo de entrada
     document.getElementById('user-input').value = '';
-  }
+}
 
-  // Adiciona evento de clique ao botão "Reiniciar chat"
-  document.getElementById('btn-reload').addEventListener('click', function () {
+document.getElementById('btn-reload').addEventListener('click', function () {
     document.getElementById('chat-box').innerHTML = ''; // Limpa o conteúdo do chat-box
-  });
+});
 
-  function enviarPerguntaAoPressionarEnter(event) {
-    if (event.key === 'Enter') { // Verifica se a tecla pressionada é Enter
-      event.preventDefault(); // Evita que a tecla Enter submeta o formulário
-      enviarPergunta(); // Chama a função para enviar a pergunta
+function enviarPerguntaAoPressionarEnter(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        enviarPergunta();
     }
-  }
+}
 
-  // Adiciona evento de teclado ao campo de entrada
-  document.getElementById('user-input').addEventListener('keypress', enviarPerguntaAoPressionarEnter);
+document.getElementById('user-input').addEventListener('keypress', enviarPerguntaAoPressionarEnter);
+
 </script>
 
 </body>
