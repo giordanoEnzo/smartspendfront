@@ -14,10 +14,10 @@ body {
 }
 
 #btn-reload {
-    display: block; 
+    display: block;
     color: #fff;
     background-color: #003c5f;
-    margin: 0 auto;
+    margin-left: 5%;
     margin-bottom: 30px;
 }
 
@@ -34,8 +34,9 @@ body {
     max-width: 80%;
     margin-left: auto;
     margin-right: auto;
+    display: flex;
+    flex-direction: column; /* Torna o chat-box uma coluna flexível */
 }
-
 .pergunta, .resposta {
     display: inline-block;
     padding: 8px 12px;
@@ -69,13 +70,8 @@ body {
     word-wrap: break-word;
     text-align: left;
     max-width: 90%;
+    position: relative; /* Para o spinner ficar dentro do elemento resposta */
 }
-
-
-
-
-
-
 
 .chat-input-container {
     display: flex;
