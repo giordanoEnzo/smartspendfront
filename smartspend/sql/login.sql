@@ -1,0 +1,10 @@
+CREATE DATABASE IF NOT EXISTS smart_spend;
+USE smart_spend;
+
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    tipo ENUM('admin', 'user') NOT NULL DEFAULT 'user'
+);

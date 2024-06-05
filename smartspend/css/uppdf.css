@@ -1,0 +1,38 @@
+body {
+    background-color: #292929;
+    color: #ffffff;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+#logo {
+    width: 30%;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+#title{
+        display: flex;
+        background-color: #ffffff00;
+        color: #ffffff;
+        border: 1px solid #444444;
+        border-radius: 5px;
+        overflow: hidden;        
+}
+
+
+.btn-primary{
+    background-color: #003c5f;
+    border-color: #003c5f;
+}
+
+.btn-primary:hover {
+    background-color: #005480;
+    border-color: #005480;
+}
+
+
+
+
